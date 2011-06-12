@@ -59,8 +59,10 @@
 					"left":0, 
 					"z-index" : options.zindex, 
 					"background": options.theme == "white" ? "black" : "white", 
-					"opacity": options.opacity
+					"opacity": options.opacity,
+					"pointer-events": " none"
 				});
+
 				$("body").append(div);
 				
 				var paper = new Raphael(document.getElementById(id),$(window).width(),$(window).height());
