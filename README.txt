@@ -14,5 +14,5 @@ $("#test").coachy({
 
 "on" is the event at wish your coach mark is supposed to activate
 "off" is the event applicable to the selector, when trigger removes the coach mark
-"x1, y2" tail of the arrow
+"x1, y1" tail of the arrow
 "x2, y2" head of the arrow

@@ -21,7 +21,7 @@
 	}
 
 	Raphael.fn.arrow = function (x1, y1, x2, y2, size, stroke) {
-		var cx1 = Math.random() * 20, cy1 = Math.random() * 20, cx2 = Math.random() * 300, cy2 = Math.random() * 350;
+        var cx1 = x1 + 10, cy1 =  y1  - 10, cx2 = x2 + 10 , cy2 = y2 - 10;
 		var linePath = this.path("M" + x1 + " " + y1 + " C" + cx1 + " " + cy1 + " " + cx2 + " " + cy2 + " " + x2 + " " + y2).attr({"stroke-width": "1px", stroke: stroke});
 		var point = linePath.getPointAtLength(linePath.getTotalLength() - 10);
 		var angle = Raphael.angle(point.x, point.y, x2, y2);
@@ -34,7 +34,7 @@
 			var id = "__jquerycoachy__" + parseInt(Math.random() * 10);
 			var defaults = {
 				on: "click",
-				off: "click",
+				off: "mouseover",
 				arrow: {
 					x1: $(window).width() / 2,
 					y1: $(window).height() / 2,
@@ -84,8 +84,9 @@
 			return this.each( function() {
 				var o = options;
 				var obj = $(this);
-				obj.one(o.off, function() {
+				obj.bind(o.off, function() {
 					$("#" + id).remove();
+					$(this).unbind(o.off);
 				});
 			});
 		}
