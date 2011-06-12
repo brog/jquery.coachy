@@ -86,7 +86,6 @@
 				var obj = $(this);
 				obj.bind(o.off, function() {
 					$("#" + id).remove();
-					$(this).unbind(o.off);
 				});
 			});
 		}
