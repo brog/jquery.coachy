@@ -20,18 +20,18 @@
 		return;
 	}
 
-	Raphael.fn.arrow = function (x1, y1, x2, y2, size) {
-		var cx1 = Math.random() * 200, cy1 = Math.random() * 200, cx2 = Math.random() * 100, cy2 = Math.random() * 150;
-		var linePath = this.path("M" + x1 + " " + y1 + " C" + cx1 + " " + cy1 + " " + cx2 + " " + cy2 + " " + x2 + " " + y2).attr("stroke-width", "1px");
-		var point = linePath.getPointAtLength(linePath.getTotalLength() - size);
+	Raphael.fn.arrow = function (x1, y1, x2, y2, size, stroke) {
+		var cx1 = Math.random() * 20, cy1 = Math.random() * 20, cx2 = Math.random() * 300, cy2 = Math.random() * 350;
+		var linePath = this.path("M" + x1 + " " + y1 + " C" + cx1 + " " + cy1 + " " + cx2 + " " + cy2 + " " + x2 + " " + y2).attr({"stroke-width": "1px", stroke: stroke});
+		var point = linePath.getPointAtLength(linePath.getTotalLength() - 10);
 		var angle = Raphael.angle(point.x, point.y, x2, y2);
-		var arrowPath = this.path("M" + x2 + " " + y2 + " L" + ((x2 - 10) - size) + " " + (y2 - size) + " L" + ((x2 - 10)  - size)  + " " + (y2 + size) + " L" + x2 + " " + y2 ).rotate((angle+180),x2,y2).attr("fill","black").attr("stroke-width", "1px");
+		var arrowPath = this.path("M" + x2 + " " + y2 + " L" + ((x2 - 10) - size) + " " + (y2 - size) + " L" + ((x2 - 10)  - size)  + " " + (y2 + size) + " L" + x2 + " " + y2 ).rotate((angle+180),x2,y2).attr({"fill": stroke, "stroke": stroke,"stroke-width":"1px"});
 		return [linePath,arrowPath];
 	}
 	
 	$.fn.extend({
 		coachy: function(options) {
-
+			var id = "__jquerycoachy__" + parseInt(Math.random() * 10);
 			var defaults = {
 				on: "click",
 				off: "click",
@@ -41,6 +41,9 @@
 					x2: 30,
 					y2: 30
 				},
+				zindex: "-999999",
+				opacity: 0.8,
+				theme: "white",
 				message: "Hey there!"
 			};
 
@@ -48,25 +51,39 @@
 
 			$(document).bind(options.on, function() {
 				var x1 = options.arrow.x1, y1 = options.arrow.y1, x2 = options.arrow.x2, y2 = options.arrow.y2;
-				var paper = new Raphael(0,0,$(window).width(),$(window).height());
-				paper.arrow(x1,y1,x2,y2,5);
+				
+				var div = $("<div />").attr("id", id);
+				div.css({
+					"position": "absolute", 
+					"top":0, 
+					"left":0, 
+					"z-index" : options.zindex, 
+					"background": options.theme == "white" ? "black" : "white", 
+					"opacity": options.opacity
+				});
+				$("body").append(div);
+				
+				var paper = new Raphael(document.getElementById(id),$(window).width(),$(window).height());
+				paper.arrow(x1,y1,x2,y2,5, options.theme);
 
 				var offsetX = (x1 < x2) ? offsetX = -30 : offsetX = 30;
 				var offsetY = (y1 < y2) ? offsetY = -30 : offsetY = 30;
 
 				paper.text(x1 + offsetX, y1 + offsetY, options.message).attr({
 					font:"Helvetica",
-					"font-size": "25px"
+					"font-size": "25px",
+					stroke: options.theme,
+					fill: options.theme
 				});
 
-				$("svg").css("pointer-events", " none");
 				$(this).unbind(options.on);
+				$("#" + id + " > svg").css("pointer-events", " none");
 			});
 			return this.each( function() {
 				var o = options;
 				var obj = $(this);
 				obj.one(o.off, function() {
-					$("svg").remove();
+					$("#" + id).remove();
 				});
 			});
 		}

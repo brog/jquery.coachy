@@ -7,7 +7,9 @@
 			
 			$( function() {
 				$("#test").coachy({
-					on: "custom"
+					on: "custom",
+					message: "If you click there you'll see",
+					theme: "white"
 				});
 				/*
 				$("#test").coachy({
@@ -25,7 +27,7 @@
 				
 				setInterval(function(){
 					$(document).trigger("custom");
-				},2000);
+				},200);
 			});
 		</script>
 	</head>
