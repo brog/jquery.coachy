@@ -12,7 +12,7 @@ $("#test").coachy({
 	message: "This is a coach message"
 });
 
-"on" is the event at wish your coach mark is supposed to activate
-"off" is the event applicable to the selector, when trigger removes the coach mark
+"on" is the event at wish your coach mark is supposed to activate, it's attached to the document element
+"off" is the event applicable to the selector, when this event is triggered removes the coach mark
 "x1, y1" tail of the arrow
 "x2, y2" head of the arrow
