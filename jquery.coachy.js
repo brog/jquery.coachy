@@ -21,7 +21,24 @@
 	}
 
 	Raphael.fn.arrow = function (x1, y1, x2, y2, size, stroke) {
-        var cx1 = x1 + 10, cy1 =  y1  - 10, cx2 = x2 + 10 , cy2 = y2 - 10;
+        var cx1 = 0, cy1 = 0, cx2 = 0, cy2 = 0;
+        var curve = 200;
+        if (x1 > x2 && y1 > y2) { //arrow diag from bottom right to top left 
+        	cx1 = x1 - curve; cy1 = y1; cx2 = x2; cy2 = y2 + curve;	
+        } else if (x1 < x2 && y1 < y2) { //arrow diag from top left to bottom right 
+        	cx1 = x1 + curve; cy1 = y1; cx2 = x2; cy2 = y2 - curve;	
+        } else if (x1 > x2 && y1 < y2) { //arrow diag from top right to bottom left
+        	cx1 = x1 - curve; cy1 = y1; cx2 = x2; cy2 = y2 - curve;
+        } else if (x1 < x2 && y1 > y2) { //arrow diag from bottom left to top right 
+        	cx1 = x1 + curve; cy1 = y1; cx2 = x2; cy2 = y2 + curve;
+        } else if (y1 == y2 && x1 != x2) { //straight horizontal line
+        	cx1 = x1; cy1 = y1 - 100; cx2 = x2; cy2 = y2 - 100;
+        } else if (y1 != y2 && x1 == x2) { //straight vertical line
+        	cx1 = x1 + 100; cy1 = y1; cx2 = x2 + 100; cy2 = y2;
+        }else if (y1 == y2 && x1 == x2) { //dot
+        	cx1 = x1; cy1 = y1; cx2 = x2; cy2 = y2;
+        }
+        
 		var linePath = this.path("M" + x1 + " " + y1 + " C" + cx1 + " " + cy1 + " " + cx2 + " " + cy2 + " " + x2 + " " + y2).attr({"stroke-width": "1px", stroke: stroke});
 		var point = linePath.getPointAtLength(linePath.getTotalLength() - 10);
 		var angle = Raphael.angle(point.x, point.y, x2, y2);

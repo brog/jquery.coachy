@@ -4,28 +4,33 @@
 		<script type="text/javascript" src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
 		<script type="text/javascript" src="jquery.coachy.js"></script>
 		<script>
-			
 			$( function() {
 				$("#test").coachy({
 					on: "custom",
 					message: "If you click there you'll see",
-					theme: "white"
+					theme: "white",
+					arrow: {
+						x1: $(window).width()/2,
+						y1: $(window).height()/2,
+						x2: 30,
+						y2: 30 
+					}
 				});
 				/*
-				$("#test").coachy({
-					on: "custom",
-					off: "mouseout",
-					arrow: {
-						x1: 345,
-						y1: 100,
-						x2: 50,
-						y2: 50
-					},
-					message: "This is a coach message"
-				});
-				*/
-				
-				setInterval(function(){
+				 $("#test").coachy({
+				 on: "custom",
+				 off: "mouseout",
+				 arrow: {
+				 x1: 345,
+				 y1: 100,
+				 x2: 50,
+				 y2: 50
+				 },
+				 message: "This is a coach message"
+				 });
+				 */
+
+				setInterval( function() {
 					$(document).trigger("custom");
 				},200);
 			});
