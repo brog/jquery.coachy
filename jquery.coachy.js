@@ -68,6 +68,8 @@
 
 			$(document).bind(options.on, function() {
 				var x1 = options.arrow.x1, y1 = options.arrow.y1, x2 = options.arrow.x2, y2 = options.arrow.y2;
+				var windowX = $(window).width();
+				var windowY = $(window).height();
 				
 				var div = $("<div />").attr("id", id);
 				div.css({
@@ -82,7 +84,7 @@
 
 				$("body").append(div);
 				
-				var paper = new Raphael(document.getElementById(id),$(window).width(),$(window).height());
+				var paper = new Raphael(document.getElementById(id),windowX,windowY);
 				paper.arrow(x1,y1,x2,y2,5, options.theme);
 
 				var offsetX = (x1 < x2) ? offsetX = -30 : offsetX = 30;
@@ -94,16 +96,45 @@
 					stroke: options.theme,
 					fill: options.theme
 				});
+				
+				var esc;
+				var interval;
+				$(document).mousemove(function() {
+					if (!esc || esc == null) {
+						clearInterval(interval);
+						esc = paper.text(windowX - 100, windowY - 70, "Esc to dismiss").attr({
+							font:"Helvetica",
+							"font-size": "20px",
+							stroke: options.theme,
+							fill: options.theme
+						});
+						
+						interval = setInterval(function(){
+							if (esc) {
+								esc.remove();
+								esc = null;
+							}
+						}, 5000);
+					}
+				});
 
 				$(this).unbind(options.on);
 				$("#" + id + " > svg").css("pointer-events", " none");
 			});
+			
 			return this.each( function() {
 				var o = options;
 				var obj = $(this);
-				obj.bind(o.off, function() {
+				obj.bind(o.off, function(e) {
 					$("#" + id).remove();
 				});
+				
+				$(document).bind("keypress", function(e){
+					var code = (e.keyCode ? e.keyCode : e.which);
+					if (code == 27) {
+						$("#" + id).remove();
+					}
+				})
 			});
 		}
 	});
