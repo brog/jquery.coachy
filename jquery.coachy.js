@@ -48,6 +48,7 @@
 	
 	$.fn.extend({
 		coachy: function(options) {
+
 			var id = "__jquerycoachy__" + parseInt(Math.random() * 10);
 			var defaults = {
 				on: "click",
@@ -55,8 +56,8 @@
 				arrow: {
 					x1: $(window).width() / 2,
 					y1: $(window).height() / 2,
-					x2: 30,
-					y2: 30
+					x2: this.offset().left + (this.width() / 2),
+					y2: this.offset().top + this.height() + 2
 				},
 				zindex: "-999999",
 				opacity: 0.8,
@@ -96,26 +97,13 @@
 					stroke: options.theme,
 					fill: options.theme
 				});
-				
-				var esc;
-				var interval;
-				$(document).mousemove(function() {
-					if (!esc || esc == null) {
-						clearInterval(interval);
-						esc = paper.text(windowX - 100, windowY - 70, "Esc to dismiss").attr({
-							font:"Helvetica",
-							"font-size": "20px",
-							stroke: options.theme,
-							fill: options.theme
-						});
-						
-						interval = setInterval(function(){
-							if (esc) {
-								esc.remove();
-								esc = null;
-							}
-						}, 5000);
-					}
+
+				//close button in top right
+				 paper.text(windowX - 20, 20, "x").attr({
+					font:"Helvetica",
+					"font-size": "20px",
+					stroke: options.theme,
+					fill: options.theme
 				});
 
 				$(this).unbind(options.on);
@@ -129,9 +117,13 @@
 					$("#" + id).remove();
 				});
 				
-				$(document).bind("keypress", function(e){
+				//hide marks on escape
+				//latest chrome on mac doesnt seem send the event to browser though
+				$(document).on("keypress", function(e){
 					var code = (e.keyCode ? e.keyCode : e.which);
+					console.log(code)
 					if (code == 27) {
+
 						$("#" + id).remove();
 					}
 				})
